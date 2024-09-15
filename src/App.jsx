@@ -3,8 +3,10 @@ import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { WagmiProvider } from 'wagmi'
 import { arbitrum, mainnet, hedera, hederaTestnet, polygon, polygonAmoy, rootstock, rootstockTestnet } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Provider as ReduxProvider } from 'react-redux'
+import { store } from './store'
 import ConnectButton from './ConnectButton'
-
+import Counter from './components/Counter'
 
 // 1. Get projectId
 const projectId = '2c4250b0ed1c4c85027974613fc83eaf'
@@ -31,16 +33,19 @@ function App() {
 
 
   return (
-    <>
+    <ReduxProvider store={store}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <h1 className="text-3xl font-bold underline">
-            React + Vite + TailwindCSS + Web3Modal + Wagmi + Hedera 
-          </h1>
-          <ConnectButton />
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <h1 className="text-3xl font-bold underline mb-4 text-center">
+              React + Vite + TailwindCSS + Web3Modal + Wagmi + Hedera + Redux
+            </h1>
+            <ConnectButton />
+            <Counter />
+          </div>
         </QueryClientProvider>
       </WagmiProvider>
-    </>
+    </ReduxProvider>
   )
 }
 

@@ -1,7 +1,7 @@
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { WagmiProvider } from 'wagmi'
-import { arbitrum, mainnet , hedera, hederaTestnet, polygon , polygonAmoy, rootstock , rootstockTestnet } from 'wagmi/chains'
+import { arbitrum, mainnet, hedera, hederaTestnet, polygon, polygonAmoy, rootstock, rootstockTestnet } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ConnectButton from './ConnectButton'
 
@@ -17,7 +17,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
-const chains = [mainnet, arbitrum, hedera, hederaTestnet, polygon , polygonAmoy, rootstock , rootstockTestnet ]
+const chains = [mainnet, arbitrum, hedera, hederaTestnet, polygon, polygonAmoy, rootstock, rootstockTestnet]
 const config = defaultWagmiConfig({ chains, projectId, metadata })
 
 // 3. Create modal
@@ -28,16 +28,19 @@ const queryClient = new QueryClient()
 
 
 function App() {
- 
+
 
   return (
     <>
       <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <ConnectButton />
-      </QueryClientProvider>
-    </WagmiProvider>
-     </>
+        <QueryClientProvider client={queryClient}>
+          <h1 className="text-3xl font-bold underline">
+            React + Vite + TailwindCSS + Web3Modal + Wagmi + Hedera 
+          </h1>
+          <ConnectButton />
+        </QueryClientProvider>
+      </WagmiProvider>
+    </>
   )
 }
 

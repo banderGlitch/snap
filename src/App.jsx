@@ -31,6 +31,37 @@ const queryClient = new QueryClient()
 
 function App() {
 
+  const snapId = 'local:http://localhost:9000'; 
+
+
+  const installSnap = async () => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_requestSnaps',
+        params: { [snapId]: {} },
+      });
+    } catch (error) {
+      console.error('Failed to install Snap:', error);
+      setStatus('Failed to install Snap');
+    }
+  };
+
+  const getWalletAddress = async () => {
+    try {
+      const response = await window.ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: { 
+          snapId: snapId,
+          request: { method: 'getWalletAddress' }
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to get wallet address:', error);
+    }
+  };
+
+
 
   return (
     <ReduxProvider store={store}>
@@ -40,6 +71,8 @@ function App() {
             <h1 className="text-3xl font-bold underline mb-4 text-center">
               React + Vite + TailwindCSS + Web3Modal + Wagmi + Hedera + Redux
             </h1>
+            <button onClick={installSnap}>Install Snap</button>
+            <button onClick={getWalletAddress}>Lunch Snap</button>
             <ConnectButton />
             <Counter />
           </div>

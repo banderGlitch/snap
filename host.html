@@ -1,73 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <body>
-  <button id="connectButton">Connect to MetaMask</button>
-  <button id="installButton" disabled>Install Snap</button>
-  <button id="getAddressButton" disabled>Get Wallet Address</button>
-  <p id="result"></p>
+    <button id="connectButton">Connect to MetaMask</button>
+    <button id="installButton">Install Snap</button>
+    <button id="getAddressButton" disabled>Get Wallet Address</button>
+    <p id="result"></p>
 
-  <script>
-    // For npm package (replace with your actual package name if published)
-    // const snapId = 'npm:your-snap-package-name';
+    <script>
+        // For npm package (replace with your actual package name if published)
+        // const snapId = 'npm:your-snap-package-name';
 
-    // For local development (update the port if you're using a different one)
-    const snapId = 'local:http://localhost:9000';
+        // For local development (update the port if you're using a different one)
+        const snapId = 'local:http://localhost:9000';
 
-    const connectButton = document.getElementById('connectButton');
-    const installButton = document.getElementById('installButton');
-    const getAddressButton = document.getElementById('getAddressButton');
-    const resultParagraph = document.getElementById('result');
+        const connectButton = document.getElementById('connectButton');
+        const installButton = document.getElementById('installButton');
+        const getAddressButton = document.getElementById('getAddressButton');
+        const resultParagraph = document.getElementById('result');
 
-    connectButton.addEventListener('click', connect);
-    installButton.addEventListener('click', installSnap);
-    getAddressButton.addEventListener('click', getWalletAddress);
+        connectButton.addEventListener('click', connect);
+        installButton.addEventListener('click', installSnap);
+        getAddressButton.addEventListener('click', getWalletAddress);
 
-    // Check if MetaMask is installed
-    if (typeof window.ethereum !== 'undefined') {
-      connectButton.disabled = false;
-    } else {
-      resultParagraph.textContent = 'Please install MetaMask!';
-    }
-
-    async function connect() {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
-          connectButton.disabled = true;
-          installButton.disabled = false;
-          resultParagraph.textContent = 'Connected to MetaMask!';
-        } catch (error) {
-          resultParagraph.textContent = `Error: ${error.message}`;
+        // Check if MetaMask is installed
+        if (typeof window.ethereum !== 'undefined') {
+            connectButton.disabled = false;
+        } else {
+            resultParagraph.textContent = 'Please install MetaMask!';
         }
-      } else {
-        resultParagraph.textContent = 'Please install MetaMask!';
-      }
-    }
 
-    async function installSnap() {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_requestSnaps',
-          params: { [snapId]: {} },
-        });
-        getAddressButton.disabled = false;
-        resultParagraph.textContent = 'Snap installed successfully!';
-      } catch (error) {
-        resultParagraph.textContent = `Error installing snap: ${error.message}`;
-      }
-    }
+        async function connect() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    connectButton.disabled = true;
+                    installButton.disabled = false;
+                    resultParagraph.textContent = 'Connected to MetaMask!';
+                } catch (error) {
+                    resultParagraph.textContent = `Error: ${error.message}`;
+                }
+            } else {
+                resultParagraph.textContent = 'Please install MetaMask!';
+            }
+        }
 
-    async function getWalletAddress() {
-      try {
-        const response = await window.ethereum.request({
-          method: 'wallet_invokeSnap',
-          params: { snapId, request: { method: 'getWalletAddress' } },
-        });
-        resultParagraph.textContent = `Entered wallet address: ${response}`;
-      } catch (error) {
-        resultParagraph.textContent = `Error: ${error.message}`;
-      }
-    }
-  </script>
+        async function installSnap() {
+
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_requestSnaps',
+                    params: { ['local:http://localhost:9000']: {} }
+                })
+                getAddressButton.disabled = false;
+                resultParagraph.textContent = 'Snap installed successfully!';
+            } catch (error) {
+                resultParagraph.textContent = `Error installing snap: ${error.message}`;
+            }
+        }
+
+        async function getWalletAddress() {
+            try {
+                const response = await window.ethereum.request({
+                    method: 'wallet_invokeSnap',
+                    params: { snapId, request: { method: 'getWalletAddress' } },
+                });
+                resultParagraph.textContent = `Entered wallet address: ${response}`;
+            } catch (error) {
+                resultParagraph.textContent = `Error: ${error.message}`;
+            }
+        }
+    </script>
 </body>
+
 </html>

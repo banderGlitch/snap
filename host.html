@@ -1,5 +1,169 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>MetaMask Snap Test</title>
+</head>
+<body>
+    <h1>MetaMask Snap Test</h1>
+    <button id="connectButton">Connect to MetaMask</button>
+    <button id="installButton" disabled>Install Snap</button>
+    <button id="getAddressButton" disabled>Get Wallet Address</button>
+    <p id="result"></p>
+    <p id="status">Status: Not connected</p>
+
+    <script>
+        console.log('Script loaded');
+
+        const snapId = 'local:http://localhost:9000'; // Adjust if necessary
+
+        const connectButton = document.getElementById('connectButton');
+        const installButton = document.getElementById('installButton');
+        const getAddressButton = document.getElementById('getAddressButton');
+        const resultParagraph = document.getElementById('result');
+        const statusParagraph = document.getElementById('status');
+
+        connectButton.addEventListener('click', connect);
+        installButton.addEventListener('click', installSnap);
+        getAddressButton.addEventListener('click', getWalletAddress);
+
+        console.log('Event listeners added');
+
+        if (typeof window.ethereum !== 'undefined') {
+            console.log('MetaMask is installed');
+            statusParagraph.textContent = 'Status: MetaMask is installed';
+        } else {
+            console.log('MetaMask is not installed');
+            statusParagraph.textContent = 'Status: Please install MetaMask';
+        }
+
+        async function connect() {
+            console.log('Connect button clicked');
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    connectButton.disabled = true;
+                    installButton.disabled = false;
+                    statusParagraph.textContent = 'Status: Connected to MetaMask';
+                } catch (error) {
+                    console.error('Failed to connect:', error);
+                    statusParagraph.textContent = 'Status: Failed to connect to MetaMask';
+                }
+            } else {
+                console.error('MetaMask is not installed');
+                statusParagraph.textContent = 'Status: Please install MetaMask';
+            }
+        }
+
+        async function installSnap() {
+            console.log('Install button clicked');
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_requestSnaps',
+                        params: { [snapId]: {} }
+                    });
+                    getAddressButton.disabled = false;
+                    statusParagraph.textContent = 'Status: Snap installed successfully';
+                } catch (error) {
+                    console.error('Failed to install snap:', error);
+                    statusParagraph.textContent = 'Status: Failed to install Snap';
+                }
+            } else {
+                console.error('MetaMask is not installed');
+                statusParagraph.textContent = 'Status: Please install MetaMask';
+            }
+        }
+
+        async function getWalletAddress() {
+            console.log('Get Address button clicked');
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const response = await window.ethereum.request({
+                        method: 'wallet_invokeSnap',
+                        params: { 
+                            snapId: snapId,
+                            request: { method: 'getWalletAddress' }
+                        }
+                    });
+                    resultParagraph.textContent = `Wallet address: ${response}`;
+                    statusParagraph.textContent = 'Status: Wallet address received';
+                } catch (error) {
+                    console.error('Failed to get wallet address:', error);
+                    statusParagraph.textContent = 'Status: Failed to get wallet address';
+                }
+            } else {
+                console.error('MetaMask is not installed');
+                statusParagraph.textContent = 'Status: Please install MetaMask';
+            }
+        }
+    </script>
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>MetaMask Snap Test</title>
+</head>
+<body>
+    <h1>MetaMask Snap Test</h1>
+    <button id="connectButton">Connect to MetaMask</button>
+    <button id="installButton">Install Snap</button>
+    <button id="getAddressButton" disabled>Get Wallet Address</button>
+    <p id="result"></p>
+    <p id="status">Status: Not connected</p>
+
+    <script>
+        console.log('Script loaded');
+
+        const snapId = 'local:http://localhost:9000'; // Adjust if necessary
+
+        const connectButton = document.getElementById('connectButton');
+        const installButton = document.getElementById('installButton');
+        const getAddressButton = document.getElementById('getAddressButton');
+        const resultParagraph = document.getElementById('result');
+        const statusParagraph = document.getElementById('status');
+
+        connectButton.addEventListener('click', connect);
+        installButton.addEventListener('click', installSnap);
+        getAddressButton.addEventListener('click', getWalletAddress);
+
+        console.log('Event listeners added');
+
+        if (typeof window.ethereum !== 'undefined') {
+            console.log('MetaMask is installed');
+            statusParagraph.textContent = 'Status: MetaMask is installed';
+        } else {
+            console.log('MetaMask is not installed');
+            statusParagraph.textContent = 'Status: Please install MetaMask';
+        }
+
+        async function connect() {
+            console.log('Connect button clicked');
+            // ... rest of the connect function
+        }
+
+        async function installSnap() {
+            console.log('Install button clicked');
+           
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_requestSnaps',
+                    params: { ['local:http://localhost:9000']: {} }
+                })
+            } catch (error) {
+                console.error('Error installing snap:', error);
+            }
+        }
+
+        async function getWalletAddress() {
+            console.log('Get Address button clicked');
+            // ... rest of the getWalletAddress function
+        }
+    </script>
+</body>
+</html> -->
+<!-- <!DOCTYPE html>
+<html>
 
 <body>
     <button id="connectButton">Connect to MetaMask</button>
@@ -46,6 +210,7 @@
         }
 
         async function installSnap() {
+            console.log("installing snap");
 
             try {
                 await window.ethereum.request({
@@ -73,4 +238,4 @@
     </script>
 </body>
 
-</html>
+</html> -->

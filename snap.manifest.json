@@ -3,7 +3,7 @@
   "description": "My first MetaMask Snap",
   "proposedName": "My MetaMask Snap",
   "source": {
-    "shasum": "59keCnKZ/U52KcbnPrt8nMhz6o/U3lUzcCkKQCLcQ3w=",
+    "shasum": "SQyvD/OwzwwWXHrtAyS0LXwb7qJLBlJah5HmH7+b1Os=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -15,6 +15,7 @@
   },
   "initialPermissions": {
     "snap_dialog": {},
+    "snap_getEntropy": {},
     "endowment:rpc": {
       "dapps": true,
       "snaps": false

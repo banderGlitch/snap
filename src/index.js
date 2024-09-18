@@ -3,17 +3,26 @@ import { Box, Heading, Text } from "@metamask/snaps-sdk/jsx";
 export const onRpcRequest = async ({ origin, request }) => {
   switch (request.method) {
     case 'getWalletAddress':
+      // Get the current wallet address from MetaMask
+      const entropy = await snap.request({
+        method: 'snap_getEntropy',
+        params: {
+          version: 1
+        }
+      });
+
+      // Use the entropy to derive an address (this is a simplified example)
+      const walletAddress = `0x${entropy.slice(2, 42)}`;
       return snap.request({
         method: "snap_dialog",
         params: {
-          type: "prompt",
+          type: "alert",
           content: (
             <Box>
-              <Heading>What is the wallet address?</Heading>
-              <Text>Please enter the wallet address to be monitored</Text>
+              <Heading>Current wallet address</Heading>
+              <Text>{walletAddress}</Text>
             </Box>
           ),
-          placeholder: "0x123...",
         },
       });
     default:
@@ -37,7 +46,7 @@ export const onRpcRequest = async ({ origin, request }) => {
 //   },
 // });
 
-// walletAddress will be a string containing the address entered by the user. 
+// walletAddress will be a string containing the address entered by the user.
 // import { OnRpcRequestHandler } from '@metamask/snaps-types';
 // import { panel, text, divider, heading } from '@metamask/snaps-ui';
 

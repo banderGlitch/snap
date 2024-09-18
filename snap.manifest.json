@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "description": "My first MetaMask Snap",
+  "proposedName": "My MetaMask Snap",
+  "source": {
+    "shasum": "vZTi6YO3Z8EvwA1rqUbQYaNwQr1UlVzAXH/0M/Np4MA=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "my-metamask-snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_dialog": {}
+  },
+  "manifestVersion": "0.1"
+}
